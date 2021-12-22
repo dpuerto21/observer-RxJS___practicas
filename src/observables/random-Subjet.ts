@@ -5,7 +5,6 @@ const observer: Observer<number> = {
   error: (error) => console.warn('erros : ', error),
   complete: () => console.info('completado'),
 };
-3;
 
 const intervalo$ = new Observable<number>((subscriber) => {
   const numRandom = setInterval(() => subscriber.next(Math.random()), 2000);
@@ -19,7 +18,8 @@ const intervalo$ = new Observable<number>((subscriber) => {
 });
 
 const subjet$ = new Subject<number>();
-intervalo$.subscribe(subjet$);
+
+const suscription = intervalo$.subscribe(subjet$);
 
 const intrervalo2$ = subjet$.subscribe(observer);
 
@@ -31,6 +31,7 @@ const intrervalo3$ = subjet$.subscribe(observer);
 setTimeout(() => {
   subjet$.next(555);
   subjet$.complete();
+  suscription.unsubscribe();
 
   // subjet$.error(console.warn('Hay un EROR!!!'));
   console.log('Subjet completado');
